@@ -3,6 +3,8 @@ import { api } from "../api/api";
 
 const initialState = {
     dataPosts: [],
+    postPerPage : 10,
+    currentPage : 1
 
 }
 
@@ -55,7 +57,22 @@ export const deleteTutorial = createAsyncThunk("posts/delete" , async(id)=>{
 const tutorialSlice = createSlice({
     name: "tutorial",
     initialState,
-    reducers: {},
+    reducers : {
+     
+        onNavigateNext : (state )=>{
+            state.currentPage++
+        },
+        onNavigatePrev : (state)=>{
+            state.currentPage--
+        },
+        onChangeTodosPerpage : (state , action)=>{
+            state.todosPerPage = action.payload
+        } ,
+        
+        onClickCurrentPage : (state ,action)=>{
+            state.currentPage = action.payload
+        }
+    },
     extraReducers: {
         [getAllData.fulfilled]: (state, action) => {
             state.dataPosts = action.payload
@@ -89,5 +106,7 @@ const tutorialSlice = createSlice({
     }
 })
 
+
+export const {onChangeTodosPerpage , onClickCurrentPage , onNavigateNext , onNavigatePrev} = tutorialSlice.actions
 
 export default tutorialSlice.reducer
